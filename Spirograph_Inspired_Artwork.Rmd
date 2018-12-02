@@ -1,0 +1,117 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+
+
+```{r}
+
+
+Spirograph Inspired Art
+
+
+#gr <- 0.5 * (1 + sqrt(5))
+
+spirograph <- function(inner_r=3,mo=12,col=24,k=1000,...){
+  
+  df <- tibble(
+  k = seq.int(0,k-1),
+  t = seq(0,2*pi, length.out=1000),
+  xa = inner_r*cos(t),
+  ya = inner_r*sin(t),
+  x = xa + cos(mo*t),
+  y = ya + sin(mo*t)
+)
+
+df %>% 
+  ggplot(aes(x=x,y=y,color=factor(k%%col))) + 
+  geom_point(alpha=0.1) +
+  geom_path(size=0.1) +
+  theme_void() +
+  coord_fixed() +
+  scale_color_viridis_d(guide="none")
+
+}
+
+epitrochoids <- function(inner_r=3,mo=12,outer_r=4,outer_d=3,col=24,k=1000,...){
+  
+  df <- tibble(
+  k = seq.int(0,k-1),  
+  t = seq(0,2*pi, length.out=1000),
+  xa = (inner_r+outer_r)*cos(t),
+  ya = (inner_r+outer_r)*sin(t),
+  x = xa - outer_d*cos(mo*t),
+  y = ya - outer_d*sin(mo*t)
+)
+
+df %>% 
+  ggplot(aes(x=x,y=y, color=factor(k%%col))) + 
+  geom_point(alpha=0.3 ,size=1) +
+  geom_path(size=0.1) +
+  theme_void() +
+  coord_fixed() +
+  scale_color_viridis_d(guide="none", option="magma")
+
+}
+
+
+epitrochoids(inner_r=3,mo=12,outer_r=4,outer_d=3,col=24,k=1000)
+epitrochoids(inner_r=3,mo=24,outer_r=4,outer_d=3,col=7,k=1000)
+epitrochoids(inner_r=3,mo=24,outer_r=4,outer_d=3,col=1,k=1000)
+spirograph(inner_r=1, mo=12, col=2, k=1000)
+spirograph(inner_r=3, mo=12, col=24, k=1000)
+spirograph(inner_r=5, mo=24, col=12, k=1000)
+
+
+### I like this! 
+artwork <- function(r1=3,speed1=1,r2=2,speed2=3,col=24,r3=0,speed3=0,k=1000,...){
+  
+  df <- tibble(
+  k = seq.int(0,k-1),  
+  t = seq(0,2*pi, length.out=1000),
+  x = r1 * cos(speed1 * t) + r2 * cos(speed2 * t) + r3 * cos(speed3*t),
+  y = r1 * sin(speed1 * t) + r2 * sin(speed2 * t) + r3 * sin(speed3*t)
+)
+
+df %>% 
+  ggplot(aes(x=x,y=y, color=factor(k%%col))) + 
+  geom_point(alpha=0.2 ,size=1) +
+  geom_path(size=0.1) +
+  theme_void() +
+  coord_fixed() +
+  scale_color_viridis_d(guide="none", option="magma") 
+
+ggsave(str_c("art/",r1,r2,r3,speed1,speed2,speed3,col,".png",sep="_"),width=6, height=6)
+
+}
+  
+artwork(r1=10,speed1=12,r2=24,speed2=24,col=24,k=1000)
+artwork(r1=10,speed1=1,r2=-5,speed2=-11,col=24,k=1000)
+artwork(r1=13,speed1=1,r2=9,speed2=12,r3=0,speed3=0,col=31,k=1000)
+artwork(r1=1,speed1=1,r2=-5,speed2=-11,col=24,k=1000)
+
+params <- tibble(
+  r1 = sample(x=c(1:20), size=12, replace=T),
+  r2 = sample(x=c(-10:10), size=12, replace=T),
+  re = sample(x=c(0,30), size=12, replace=T),
+  speed1 = sample(c(1:6), size=12, replace=T),
+  speed2 = sample(c(1:100), size=12, replace=T),
+  speed3 = sample(c(1:20), size=12, replace=T),
+  col = sample(c(1,6,12,8,9), size=12, replace=T)
+)
+
+params %>% pmap(.,artwork)
+
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
