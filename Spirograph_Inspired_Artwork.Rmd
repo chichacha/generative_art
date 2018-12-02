@@ -2,16 +2,15 @@
 title: "R Notebook"
 output: html_notebook
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 
-
+#Spirograph Inspired Art
 
 ```{r}
 
-
-Spirograph Inspired Art
+library(tidyverse)
 
 
 #gr <- 0.5 * (1 + sqrt(5))
@@ -109,7 +108,7 @@ params %>% pmap(.,artwork)
 
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
 
 When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
 
