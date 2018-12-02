@@ -12,7 +12,6 @@ editor_options:
 
 library(tidyverse)
 
-
 #gr <- 0.5 * (1 + sqrt(5))
 
 spirograph <- function(inner_r=3,mo=12,col=24,k=1000,...){
@@ -66,6 +65,12 @@ spirograph(inner_r=3, mo=12, col=24, k=1000)
 spirograph(inner_r=5, mo=24, col=12, k=1000)
 
 
+
+```
+
+## More Generalized
+```{r}
+
 ### I like this! 
 artwork <- function(r1=3,speed1=1,r2=2,speed2=3,col=24,r3=0,speed3=0,k=1000,...){
   
@@ -84,12 +89,26 @@ df %>%
   coord_fixed() +
   scale_color_viridis_d(guide="none", option="magma") 
 
-ggsave(str_c("art/",r1,r2,r3,speed1,speed2,speed3,col,".png",sep="_"),width=6, height=6)
+#ggsave(str_c("art/",r1,r2,r3,speed1,speed2,speed3,col,".png",sep="_"),width=6, height=6)
 
 }
-  
+
+
 artwork(r1=10,speed1=12,r2=24,speed2=24,col=24,k=1000)
-artwork(r1=10,speed1=1,r2=-5,speed2=-11,col=24,k=1000)
+
+library(patchwork)
+a<-artwork(r1=10,speed1=1,r2=5,speed2=-11,col=24,k=1000)
+b<-artwork(r1=10,speed1=1,r2=5,speed2=11,col=24,k=1000)
+c<-artwork(r1=10,speed1=1,r2=5,speed2=11,col=24,k=1000)
+
+d<-artwork(r1=10,speed1=1,r2=6,speed2=-11,col=36,k=1000)
+e<-artwork(r1=10,speed1=1,r2=6,speed2=11,col=36,k=1000)
+f<-artwork(r1=10,speed1=1,r2=10,speed2=11,col=12,k=1000)
+
+a + b + c + d + e + f
+
+artwork(r1=10,speed1=1,r2=12,speed2=11,r3=15,speed3=3,col=12,k=1000)
+
 artwork(r1=13,speed1=1,r2=9,speed2=12,r3=0,speed3=0,col=31,k=1000)
 artwork(r1=1,speed1=1,r2=-5,speed2=-11,col=24,k=1000)
 
@@ -107,10 +126,4 @@ params %>% pmap(.,artwork)
 
 
 ```
-
-
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
